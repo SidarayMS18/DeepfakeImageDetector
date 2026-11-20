@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advanced deepfake detection using AI - Upload images to check if they're real or AI-generated">
+    <meta name="keywords" content="deepfake, detection, AI, machine learning, image analysis">
+    <title>Deepfake Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🔍 Deepfake Detection System</h1>
+            <p class="subtitle">Advanced AI-powered image authenticity verification</p>
+            <p class="description">Upload an image to check if it's real or AI-generated/manipulated</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Upload Section -->
+        <section id="upload-section" class="section">
+            <div class="upload-container">
+                <div class="upload-content">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <h3>Select an Image to Analyze</h3>
+                    <p class="file-info">Supported: JPG, PNG, BMP, TIFF (Max 10MB)</p>
+                    
+                    <label for="file-input" class="file-select-btn">
+                        <span>Choose Image File</span>
+                    </label>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                    
+                    <div id="file-selected-info" style="display: none;">
+                        <p class="selected-file-name"></p>
+                        <p class="selected-file-size"></p>
+                    </div>
+                </div>
+            </div>
+            <button id="upload-btn" class="btn btn-primary" disabled>
+                <span>Analyze Image</span>
+            </button>
+        </section>
+
+        <!-- Loading Section -->
+        <section id="loading-section" class="section" style="display: none;">
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <h3>Analyzing Image...</h3>
+                <p>Please wait while our AI model processes your image</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="section" style="display: none;">
+            <div class="results-container">
+                <div class="image-preview-container">
+                    <h3>Uploaded Image</h3>
+                    <img id="image-preview" src="" alt="Uploaded image">
+                </div>
+
+                <div class="prediction-results">
+                    <div class="prediction-header">
+                        <h2 id="prediction-label" class="prediction-label"></h2>
+                    </div>
+                    
+                    <div class="confidence-container">
+                        <p class="confidence-text">Confidence Score</p>
+                        <p id="confidence-score" class="confidence-value"></p>
+                    </div>
+
+                    <div id="probability-bars" class="probability-bars">
+                        <div class="prob-bar-container">
+                            <div class="prob-bar-header">
+                                <label class="prob-label real-label">✅ REAL</label>
+                                <span id="real-percentage" class="percentage">0%</span>
+                            </div>
+                            <div class="bar-background">
+                                <div id="real-bar" class="bar real-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="prob-bar-container">
+                            <div class="prob-bar-header">
+                                <label class="prob-label fake-label">⚠️ FAKE</label>
+                                <span id="fake-percentage" class="percentage">0%</span>
+                            </div>
+                            <div class="bar-background">
+                                <div id="fake-bar" class="bar fake-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="metadata" class="metadata">
+                        <div class="metadata-item">
+                            <span class="metadata-label">Processing Time:</span>
+                            <span id="proc-time" class="metadata-value">-</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">Timestamp:</span>
+                            <span id="timestamp" class="metadata-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="analyze-another" class="btn btn-secondary">
+                <span>Analyze Another Image</span>
+            </button>
+        </section>
+
+        <!-- Error Section -->
+        <section id="error-section" class="section" style="display: none;">
+            <div class="error-container">
+                <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3>Error</h3>
+                <p id="error-message" class="error-message"></p>
+                <button id="try-again" class="btn btn-secondary">
+                    <span>Try Again</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Powered by Hybrid CNN-Transformer Model</p>
+            <p class="footer-note">EfficientNet-B0 + Transformer Architecture</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

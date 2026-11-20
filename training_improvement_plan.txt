@@ -1,0 +1,39 @@
+Deepfake Detection Model Improvement Plan
+==================================================
+
+DATA_AUGMENTATION:
+  transforms: (Compose(
+    RandomResizedCrop(size=(224, 224), scale=(0.8, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomRotation(degrees=[-10.0, 10.0], interpolation=nearest, expand=False, fill=0)
+    ColorJitter(brightness=(0.8, 1.2), contrast=(0.8, 1.2), saturation=(0.8, 1.2), hue=(-0.1, 0.1))
+    RandomGrayscale(p=0.1)
+    GaussianBlur(kernel_size=(3, 3), sigma=(0.1, 2.0))
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    RandomErasing(p=0.2, scale=(0.02, 0.33), ratio=(0.3, 3.3), value=0, inplace=False)
+), Compose(
+    Resize(size=256, interpolation=bilinear, max_size=None, antialias=True)
+    CenterCrop(size=(224, 224))
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+))
+  class_weights: [3.1983304284010643, 1.0]
+
+MODEL_ARCHITECTURE:
+  backbone: EfficientNet-B3
+  transformer_layers: 4
+  attention_heads: 8
+
+TRAINING_CONFIG:
+  loss_function: FocalLoss
+  optimizer: AdamW
+  scheduler: CosineAnnealingWarmRestart
+  batch_size: 16
+  epochs: 50
+
+ADVANCED_TECHNIQUES:
+  - Gradient Accumulation
+  - Mixed Precision Training
+  - Stochastic Weight Averaging
+
